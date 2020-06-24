@@ -97,6 +97,7 @@
         var row = 100, col = 100, cellWidth = 8, cellHeight = 8, array, project, times;
         drawBoard();
 
+
         function drawBoard() {
             var table = document.getElementById("board");
             for (var i = 0; i < row; i++) {
@@ -125,12 +126,6 @@
             }
         }
 
-        function clearText(num) {
-            (num == 1) ?
-                document.getElementById("number").value = "" :
-                document.getElementById("speed").value = "";
-        }
-
         function writeText(num) {
             if (num == 1 && document.getElementById("number").value == "") {
                 document.getElementById("number").value = "Infinity";
@@ -140,7 +135,13 @@
             }
         }
 
-        function checkColor(i, j) {
+        function clearText(num) {
+            (num == 1) ?
+                document.getElementById("number").value = "" :
+                document.getElementById("speed").value = "";
+        }
+
+        function getColor(i, j) {
             return document.getElementById("cell_" + i + "_" + j).style.backgroundColor;
         }
 
@@ -149,7 +150,7 @@
         }
 
         function changeColor(i, j) {
-            (checkColor(i, j) == "black") ? setColor(i, j, "white") : setColor(i, j, "black");
+            (getColor(i, j) == "black") ? setColor(i, j, "white") : setColor(i, j, "black");
         }
 
         function antWalk(num) {
@@ -160,7 +161,7 @@
             var pauseTime = +document.getElementById("speed").value;
             if (array == undefined) {
                 times = 0;
-                var direction = 0, currentX = Math.floor(row / 2), currentY = Math.floor(col / 2), currentColor = checkColor(currentX, currentY);
+                var direction = 0, currentX = Math.floor(row / 2), currentY = Math.floor(col / 2), currentColor = getColor(currentX, currentY);
             } else {
                 var direction = array[0], currentX = array[1], currentY = array[2], currentColor = array[3];
             }
@@ -209,7 +210,7 @@
                 case 2: currentX++; break;
                 case 3: currentY--; break;
             }
-            currentColor = checkColor(currentX, currentY);
+            currentColor = getColor(currentX, currentY);
             setColor(currentX, currentY, "red");
             return [direction, currentX, currentY, currentColor];
         }
