@@ -85,9 +85,9 @@
         <input type="button" value="清除" onclick="clearBoard();">
         <input type="button" value="生成动画" onclick="antWalk(2);">
         <input type="button" value="暂停" id="stop" onclick="pause();">
-        <span>更新间隔：</span><input type="text" value="10" id="speed" title="毫秒数" onfocus="clearText(2);"
+        <span>更新间隔：</span><input type="text" value="100" id="speed" title="毫秒数" onfocus="clearText(2);"
             onblur="writeText(2);">
-        <span>当前步数：</span><span id="step" style="width: 5em;">0</span>
+        <span>当前步数：</span><span id="step">0</span>
     </form>
 
     <table id="board" cellspacing="0" cellpadding="0" title="点击更改颜色"></table><br>
@@ -136,7 +136,7 @@
                 document.getElementById("number").value = "Infinity";
             }
             if (num == 2 && document.getElementById("speed").value == "") {
-                document.getElementById("speed").value = "10";
+                document.getElementById("speed").value = "100";
             }
         }
 
