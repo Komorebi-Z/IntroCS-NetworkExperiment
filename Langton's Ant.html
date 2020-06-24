@@ -12,7 +12,7 @@
             margin-top: 0;
         }
 
-        .box div {
+        .box1 div {
             float: right;
             height: 250px;
             margin: 0 10px;
@@ -48,8 +48,7 @@
 
     <h1>Langton's Ant</h1>
 
-    <div class="box" style="width:1100px; margin:auto;">
-        <img src="ant.png" style="width:100px;">
+    <div class="box1" style="width:926px; margin:auto;">
         <div style="width: 280px;">
             <h2>相关资料</h2>
             <ul style="padding-left:20px; margin: 0;">
@@ -77,19 +76,19 @@
             <h2>规则简介</h2>
             在平面上的正方形格被填上黑色或白色，其中一格上有一只“蚂蚁”，它的头部朝向上下左右其中一方。（1）若蚂蚁在黑格，右转90度，将该格改为白格，向前移一步；（2）若蚂蚁在白格，左转90度，将该格改为黑格，向前移一步。
         </div>
-
-        <form name="setup">
-            <span>设置步数：</span><input type="text" value="Infinity" id="number" title="不输入默认为Infinity"
-                onfocus="clearText(1);" onblur="writeText(1);">
-            <input type="button" value="获取结果" onclick="antWalk(1);">
-            <input type="button" value="清除" onclick="clearBoard();">
-            <input type="button" value="生成动画" onclick="antWalk(2);">
-            <input type="button" value="暂停" id="stop" onclick="pause();">
-            <span>更新间隔：</span><input type="text" value="10" id="speed" title="毫秒数" onfocus="clearText(2);"
-                onblur="writeText(2);">
-        </form>
     </div>
 
+    <form name="setup">
+        <span>设置步数：</span><input type="text" value="Infinity" id="number" title="不输入默认为Infinity" onfocus="clearText(1);"
+            onblur="writeText(1);">
+        <input type="button" value="获取结果" onclick="antWalk(1);">
+        <input type="button" value="清除" onclick="clearBoard();">
+        <input type="button" value="生成动画" onclick="antWalk(2);">
+        <input type="button" value="暂停" id="stop" onclick="pause();">
+        <span>更新间隔：</span><input type="text" value="10" id="speed" title="毫秒数" onfocus="clearText(2);"
+            onblur="writeText(2);">
+        <span>当前步数：</span><span id="step" style="width: 5em;">0</span>
+    </form>
 
     <table id="board" cellspacing="0" cellpadding="0" title="点击更改颜色"></table><br>
     <hr><br>
@@ -118,6 +117,7 @@
 
         function clearBoard() {
             erase();
+            document.getElementById("step").innerHTML = 0;
             for (var i = 0; i < row; i++) {
                 for (var j = 0; j < col; j++) {
                     setColor(i, j, "white");
@@ -160,49 +160,35 @@
             var pauseTime = +document.getElementById("speed").value;
             if (array == undefined) {
                 times = 0;
-                var direction = 0;
-                var currentX = Math.floor(row / 2);
-                var currentY = Math.floor(col / 2);
-                var currentColor = checkColor(currentX, currentY);
+                var direction = 0, currentX = Math.floor(row / 2), currentY = Math.floor(col / 2), currentColor = checkColor(currentX, currentY);
             } else {
-                var direction = array[0];
-                var currentX = array[1];
-                var currentY = array[2];
-                var currentColor = array[3];
+                var direction = array[0], currentX = array[1], currentY = array[2], currentColor = array[3];
             }
 
             if (num == 1) {
                 clearInterval(project);
-                while (times++ < numOfPace) {
+                while (++times <= numOfPace) {
                     if (currentX == row - 1 || currentY == col - 1 || currentX == 0 || currentY == 0) {
                         alert("蚂蚁撞到边界了！");
-                        erase();
                         break;
                     }
                     array = onePace(direction, currentX, currentY, currentColor);
-                    direction = array[0];
-                    currentX = array[1];
-                    currentY = array[2];
-                    currentColor = array[3];
+                    direction = array[0], currentX = array[1], currentY = array[2], currentColor = array[3];
+                    document.getElementById("step").innerHTML = times;
                 }
                 erase();
             } else {
                 if (project != undefined) {
-                    alert("抱歉！目前还不支持生成多只蚂蚁的情况！");
+                    alert("抱歉！目前还不支持生成多只蚂蚁同时运动的动画！");
                 } else {
                     project = setInterval(function () {
-                        if (++times <= numOfPace) {
-                            array = onePace(direction, currentX, currentY, currentColor);
-                            direction = array[0];
-                            currentX = array[1];
-                            currentY = array[2];
-                            currentColor = array[3];
-                        } else {
-                            erase();
-                        }
                         if (currentX == row - 1 || currentY == col - 1 || currentX == 0 || currentY == 0) {
                             alert("蚂蚁撞到边界了！");
                             erase();
+                        } else if (++times <= numOfPace) {
+                            array = onePace(direction, currentX, currentY, currentColor);
+                            direction = array[0], currentX = array[1], currentY = array[2], currentColor = array[3];
+                            document.getElementById("step").innerHTML = times;
                         }
                     }, pauseTime);
                 }
