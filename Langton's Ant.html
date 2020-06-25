@@ -110,12 +110,11 @@
                     newCell.style.width = cellWidth + "px";
                     newCell.style.height = cellHeight + "px";
                     newCell.style.border = "1px solid white";
-                    (i == Math.floor(row / 2) && j == Math.floor(col / 2)) ?
-                        newCell.style.background = "red" :
-                        newCell.style.background = "white";
+                    newCell.style.background = "white";
                     newRow.appendChild(newCell);
                 }
             }
+            setColor(Math.floor(row / 2), Math.floor(col / 2), "red");
         }
 
         function clearBoard() {
@@ -123,11 +122,10 @@
             document.getElementById("step").innerHTML = 0;
             for (var i = 0; i < row; i++) {
                 for (var j = 0; j < col; j++) {
-                    (i == Math.floor(row / 2) && j == Math.floor(col / 2)) ?
-                        setColor(i, j, "red") :
-                        setColor(i, j, "white");
+                    setColor(i, j, "white");
                 }
             }
+            setColor(Math.floor(row / 2), Math.floor(col / 2), "red");
         }
 
         function writeText(num) {
@@ -181,10 +179,10 @@
                     if (info[1] == row - 1 || info[2] == col - 1 || info[1] == 0 || info[2] == 0) {
                         alert("蚂蚁撞到边界了！");
                         erase();
-                    } else if (++info[4] <= numOfPace) {
-                        info = onePace(info);
-                    } else {
+                    } else if (++info[4] > numOfPace) {
                         erase();
+                    } else {
+                        info = onePace(info);
                     }
                 }, pauseTime);
             } else {
