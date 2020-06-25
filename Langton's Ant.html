@@ -106,7 +106,7 @@
                 for (var j = 0; j < col; j++) {
                     var cell = document.createElement("td");
                     cell.setAttribute("id", "cell_" + i + "_" + j);
-                    cell.setAttribute("onclick", "changeColor(" + i + "," + j + ");");
+                    cell.setAttribute("onmousedown", "changeColor(" + i + "," + j + ");");
                     cell.style.width = cellWidth + "px";
                     cell.style.height = cellHeight + "px";
                     cell.style.border = "1px solid white";
