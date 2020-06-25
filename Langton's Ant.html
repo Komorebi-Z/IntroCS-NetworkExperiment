@@ -68,7 +68,8 @@
 
         <div style="width: 320px;">
             <h2>关键问题</h2>
-            <img src="highway.png" style="width:150px;float: right;">
+            <img src="https://teacher.solid.things.ac.cn:7243/public/student_data/2019k8009970003/web/highway.png"
+                style="width:150px;float: right;">
             在蚂蚁行进到一定程度时，如右图所示，似乎总会出现以104步为周期无限重复的“高速公路”朝固定方向移动。然而到目前为止，对于一只蚂蚁的情况尚无法证明这是无论任何起始状态都会导致的必然结果。快来亲自试一试吧！<del>万一找到了反例呢</del>
         </div>
 
@@ -174,7 +175,7 @@
                 }
                 erase();
             } else if (project == undefined) {
-                project = setInterval(function() {
+                project = setInterval(() => {
                     if (info[1] == row - 1 || info[2] == col - 1 || info[1] == 0 || info[2] == 0) {
                         alert("蚂蚁撞到边界了！");
                         erase();
