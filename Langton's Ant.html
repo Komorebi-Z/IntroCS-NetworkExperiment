@@ -33,7 +33,7 @@
             clear: both;
         }
 
-        #board {
+        table {
             margin: auto;
             border: 5px solid black;
         }
@@ -91,14 +91,12 @@
         <span>当前步数：</span><span id="step">0</span>
     </form>
 
-    <table id="board" cellspacing="0" cellpadding="0" title="点击更改颜色"></table><br>
-    <hr><br>
+    <table id="board" cellspacing="0" cellpadding="0" title="点击更改颜色"></table>
 
     <script type="text/javascript">
         var row = 100, col = 100, cellWidth = 8, cellHeight = 8, info, project;
-        //info存放的是方向、x坐标、y坐标、当前颜色、次数；project存放的是目前正在进行的setInterval（即正在运动中的蚂蚁）
+        //info是一个数组，存放的是方向、x坐标、y坐标、当前颜色、次数；project存放的是目前正在进行的setInterval（即正在运动中的蚂蚁）
         drawBoard();
-
 
         function drawBoard() {
             var table = document.getElementById("board");
@@ -106,14 +104,16 @@
                 var newRow = document.createElement("tr");
                 table.appendChild(newRow);
                 for (var j = 0; j < col; j++) {
-                    var newCell = document.createElement("td");
-                    newCell.setAttribute("id", "cell_" + i + "_" + j);
-                    newCell.setAttribute("onclick", "changeColor(" + i + "," + j + ");");
-                    newCell.style.width = cellWidth + "px";
-                    newCell.style.height = cellHeight + "px";
-                    newCell.style.border = "1px solid white";
-                    newCell.style.background = "white";
-                    newRow.appendChild(newCell);
+                    var cell = document.createElement("td");
+                    cell.setAttribute("id", "cell_" + i + "_" + j);
+                    cell.setAttribute("onclick", "changeColor(" + i + "," + j + ");");
+                    cell.style.width = cellWidth + "px";
+                    cell.style.height = cellHeight + "px";
+                    cell.style.border = "1px solid white";
+                    (i == Math.floor(row / 2) && j == Math.floor(col / 2)) ?
+                        cell.style.background = "red" :
+                        cell.style.background = "white";
+                    newRow.appendChild(cell);
                 }
             }
         }
@@ -123,7 +123,9 @@
             document.getElementById("step").innerHTML = 0;
             for (var i = 0; i < row; i++) {
                 for (var j = 0; j < col; j++) {
-                    setColor(i, j, "white");
+                    (i == Math.floor(row / 2) && j == Math.floor(col / 2)) ?
+                        setColor(i, j, "red") :
+                        setColor(i, j, "white");
                 }
             }
         }
@@ -191,12 +193,12 @@
         }
 
         function onePace(info) {
-            if (info[3] == "white") {
-                setColor(info[1], info[2], "black");
-                info[0] = (info[0] + 1) % 4;
-            } else {
+            if (info[3] == "black") {
                 setColor(info[1], info[2], "white");
                 info[0] = (info[0] + 3) % 4;
+            } else {
+                setColor(info[1], info[2], "black");
+                info[0] = (info[0] + 1) % 4;
             }
             switch (info[0]) {
                 case 0: info[1]--; break;
