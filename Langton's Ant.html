@@ -104,16 +104,16 @@
                 var newRow = document.createElement("tr");
                 table.appendChild(newRow);
                 for (var j = 0; j < col; j++) {
-                    var cell = document.createElement("td");
-                    cell.setAttribute("id", "cell_" + i + "_" + j);
-                    cell.setAttribute("onmousedown", "changeColor(" + i + "," + j + ");");
-                    cell.style.width = cellWidth + "px";
-                    cell.style.height = cellHeight + "px";
-                    cell.style.border = "1px solid white";
+                    var newCell = document.createElement("td");
+                    newCell.setAttribute("id", "cell_" + i + "_" + j);
+                    newCell.setAttribute("onmousedown", "changeColor(" + i + "," + j + ");");
+                    newCell.style.width = cellWidth + "px";
+                    newCell.style.height = cellHeight + "px";
+                    newCell.style.border = "1px solid white";
                     (i == Math.floor(row / 2) && j == Math.floor(col / 2)) ?
-                        cell.style.background = "red" :
-                        cell.style.background = "white";
-                    newRow.appendChild(cell);
+                        newCell.style.background = "red" :
+                        newCell.style.background = "white";
+                    newRow.appendChild(newCell);
                 }
             }
         }
