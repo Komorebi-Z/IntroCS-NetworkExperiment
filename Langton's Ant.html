@@ -106,7 +106,7 @@
                 for (var j = 0; j < col; j++) {
                     var newCell = document.createElement("td");
                     newCell.setAttribute("id", "cell_" + i + "_" + j);
-                    newCell.setAttribute("onmousedown", "changeColor(" + i + "," + j + ");");
+                    newCell.setAttribute("onmousedown", "changeColor(" + i + "," + j + "," + 0 + ");");
                     newCell.style.width = cellWidth + "px";
                     newCell.style.height = cellHeight + "px";
                     newCell.style.border = "1px solid white";
@@ -151,8 +151,19 @@
             document.getElementById("cell_" + i + "_" + j).style.backgroundColor = color;
         }
 
-        function changeColor(i, j) {
-            (getColor(i, j) == "black") ? setColor(i, j, "white") : setColor(i, j, "black");
+        function changeColor(i, j, num) {
+            if (getColor(i, j) == "white") {
+                setColor(i, j, "black");
+            } else if (getColor(i, j) == "red") {
+                setColor(i, j, "black");
+                num++;
+            } else if (num == 0) {
+                setColor(i, j, "white");
+            } else {
+                setColor(i, j, "red");
+                num--;
+            }
+            document.getElementById("cell_" + i + "_" + j).setAttribute("onmousedown", "changeColor(" + i + "," + j + "," + num + ");");
         }
 
         function antWalk(num) {
