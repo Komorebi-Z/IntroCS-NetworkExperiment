@@ -65,8 +65,10 @@
                     <a target="blank" href="http://en.wikipedia.org/wiki/Langton%27s_ant">Langton's Ant--Wikipedia</a>
                 </li>
                 <li>
-                    <a target="blank"
-                        href="https://www.bilibili.com/video/BV1h54y1d7C5">【Minecraft】10个有趣的兰顿蚂蚁玩法--bilibili</a>
+                    <a target="blank" href="https://www.bilibili.com/video/BV1h54y1d7C5">【Minecraft】10个有趣的兰顿蚂蚁玩法--bilibili</a>
+                </li>
+                <li>
+                    <a target="blank" href="https://www.bilibili.com/video/BV1MJ411n7bC">【分形与混沌9】如何用游戏模拟森林火灾？神奇的元胞自动机--bilibili</a>
                 </li>
             </ul>
         </div>
@@ -75,7 +77,7 @@
             <h2>关键问题</h2>
             <img src="https://teacher.solid.things.ac.cn:7243/public/student_data/2019k8009970003/web/highway.png"
                 style="width:150px; float:right;">
-            在蚂蚁行进到一定程度时，如右图所示，似乎总会出现以104步为周期的“高速公路”朝固定方向移动。然而到目前为止尚无法证明，当考虑一只蚂蚁时对于任意起始状态总会导致这样的结果。快来亲自试一试吧！<del>万一找到了反例呢（逃</del>
+            在蚂蚁行进到一定程度时，如右图所示，似乎总会出现以104步为周期的“高速公路”朝固定方向移动。然而到目前为止尚无法证明，对于一只蚂蚁其任意的起始状态总会导致这样的结果。快来亲自试一试吧！<del>万一找到了反例呢（逃</del>
         </div>
 
         <div style="width:200px;">
@@ -100,7 +102,7 @@
 
     <script type="text/javascript">
         var row = 100, col = 100, cellWidth = 8, cellHeight = 8, info, project;
-        //info是一个数组，存放的是方向、x坐标、y坐标、当前颜色、次数；project存放的是目前正在进行的setInterval（即正在运动中的蚂蚁）
+        //info是一个数组，存放的是方向、x坐标、y坐标、当前颜色、当前步数；project存放的是目前正在进行的setInterval（即正在运动中的蚂蚁）
         drawBoard();
 
         function drawBoard() {
