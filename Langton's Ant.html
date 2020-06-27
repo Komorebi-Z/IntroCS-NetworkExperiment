@@ -49,7 +49,7 @@
 </head>
 
 <body style="background-color:#eee; margin:0;">
-
+    <!-- 以下使用的图片、文字均来自网络 -->
     <h1>Langton's <img src="https://teacher.solid.things.ac.cn:7243/public/student_data/2019k8009970003/web/ant.png"
             style="height:100px; margin:0 -10px -10px 0;">nt</h1>
 
@@ -65,10 +65,12 @@
                     <a target="blank" href="http://en.wikipedia.org/wiki/Langton%27s_ant">Langton's Ant--Wikipedia</a>
                 </li>
                 <li>
-                    <a target="blank" href="https://www.bilibili.com/video/BV1h54y1d7C5">【Minecraft】10个有趣的兰顿蚂蚁玩法--bilibili</a>
+                    <a target="blank"
+                        href="https://www.bilibili.com/video/BV1h54y1d7C5">【Minecraft】10个有趣的兰顿蚂蚁玩法--bilibili</a>
                 </li>
                 <li>
-                    <a target="blank" href="https://www.bilibili.com/video/BV1MJ411n7bC">【分形与混沌9】如何用游戏模拟森林火灾？神奇的元胞自动机--bilibili</a>
+                    <a target="blank"
+                        href="https://www.bilibili.com/video/BV1MJ411n7bC">【分形与混沌9】如何用游戏模拟森林火灾？神奇的元胞自动机--bilibili</a>
                 </li>
             </ul>
         </div>
@@ -86,7 +88,7 @@
         </div>
     </div>
 
-    <form name="setup">
+    <form>
         <span>设置步数：</span><input type="text" value="Infinity" id="number" title="空输入默认为Infinity" onfocus="clearText(1);"
             onblur="writeText(1);">
         <input type="button" value="获取结果" onclick="antWalk(1);">
@@ -102,9 +104,10 @@
 
     <script type="text/javascript">
         var row = 100, col = 100, cellWidth = 8, cellHeight = 8, info, project;
-        //info是一个数组，存放的是方向、x坐标、y坐标、当前颜色、当前步数；project存放的是目前正在进行的setInterval（即正在运动中的蚂蚁）
+        //info是一个数组，每位分别存放的是当前方向、x坐标、y坐标、当前颜色、当前步数；project存放的是目前正在进行的setInterval（即正在运动中的蚂蚁）
         drawBoard();
 
+        //以下drawBoard函数参考了随机游走中生成一个表格的方法
         function drawBoard() {
             var table = document.getElementById("board");
             for (var i = 0; i < row; i++) {
