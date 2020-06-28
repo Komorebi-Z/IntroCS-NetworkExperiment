@@ -49,7 +49,7 @@
 </head>
 
 <body style="background-color:#eee; margin:0;">
-    <!-- 以下使用的图片、文字均来自网络 -->
+    <!-- 以下使用的图片、文字均来源于网络，有部分修改 -->
     <h1>Langton's <img src="https://teacher.solid.things.ac.cn:7243/public/student_data/2019k8009970003/web/ant.png"
             style="height:100px; margin:0 -10px -10px 0;">nt</h1>
 
@@ -104,10 +104,10 @@
 
     <script type="text/javascript">
         var row = 100, col = 100, cellWidth = 8, cellHeight = 8, info, project;
-        //info是一个数组，每位分别存放的是当前方向、x坐标、y坐标、当前颜色、当前步数；project存放的是目前正在进行的setInterval（即正在运动中的蚂蚁）
+        //info是一个5位的数组，分别存放的是当前方向、x坐标、y坐标、当前颜色、当前步数；project存放的是目前正在进行的setInterval（即正在运动中的蚂蚁）
         drawBoard();
 
-        //以下drawBoard函数参考了随机游走中生成一个表格的方法
+        //以下drawBoard函数参考了随机游走的例子中生成表格的方法
         function drawBoard() {
             var table = document.getElementById("board");
             for (var i = 0; i < row; i++) {
@@ -213,6 +213,7 @@
         }
 
         function onePace(info) {
+            //info[0]表示方向，0为上，1为右，2为下，3为左；这样顺时针（或逆时针也行）的规定可以仅靠使用简单的剩余类就能实现递推，无需对各个方向分别讨论。
             if (info[3] == "black") {
                 setColor(info[1], info[2], "white");
                 info[0] = (info[0] + 3) % 4;
