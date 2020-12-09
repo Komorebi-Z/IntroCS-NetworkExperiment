@@ -88,22 +88,20 @@
     </div>
 
     <form>
-        <span>设置步数：</span><input type="text" value="Infinity" id="number" title="空输入默认为Infinity" onfocus="clearText(1);"
-            onblur="writeText(1);">
+        <span>设置步数：</span><input type="text" value="Infinity" id="number" title="空输入默认为Infinity" onfocus="clearText(1);" onblur="writeText(1);">
         <input type="button" value="获取结果" onclick="antWalk(1);">
         <input type="button" value="清除" onclick="clearBoard();">
         <input type="button" value="生成动画" onclick="antWalk(2);">
         <input type="button" value="暂停" id="stop" onclick="pause();">
-        <span>更新间隔：</span><input type="text" value="100" id="speed" title="毫秒数" onfocus="clearText(2);"
-            onblur="writeText(2);">
+        <span>更新间隔：</span><input type="text" value="100" id="speed" title="毫秒数" onfocus="clearText(2);" onblur="writeText(2);">
         <span>当前步数：</span><span id="step">0</span>
     </form>
 
     <table id="board" cellspacing="0" cellpadding="0" title="点击更改颜色"></table>
 
     <script type="text/javascript">
-        var row = 100, col = 100, cellWidth = 8, cellHeight = 8, info, project;
-        //info是一个5位的数组，分别存放的是当前方向、x坐标、y坐标、当前颜色、当前步数；project存放的是目前正在进行的setInterval（即正在运动中的蚂蚁）
+        var row = 100, col = 100, cellWidth = 8, cellHeight = 8, ant, move;
+        //ant是一个5位的数组，分别存放的是当前方向、x坐标、y坐标、当前颜色、当前步数；move存放的是目前正在进行的setInterval（即正在运动中的蚂蚁）
         drawBoard();
 
         //以下drawBoard函数参考了例子36随机游走中生成表格的方法
@@ -127,7 +125,7 @@
         }
 
         function clearBoard() {
-            erase();
+            stop();
             document.getElementById("step").innerHTML = 0;
             for (var i = 0; i < row; i++) {
                 for (var j = 0; j < col; j++) {
@@ -137,17 +135,17 @@
             setColor(Math.floor(row / 2), Math.floor(col / 2), "red");
         }
 
-        function writeText(num) {
-            if (num == 1 && document.getElementById("number").value == "") {
+        function writeText(mode) {
+            if (mode == 1 && document.getElementById("number").value == "") {
                 document.getElementById("number").value = "Infinity";
             }
-            if (num == 2 && document.getElementById("speed").value == "") {
+            if (mode == 2 && document.getElementById("speed").value == "") {
                 document.getElementById("speed").value = "100";
             }
         }
 
-        function clearText(num) {
-            (num == 1) ?
+        function clearText(mode) {
+            (mode == 1) ?
                 document.getElementById("number").value = "" :
                 document.getElementById("speed").value = "";
         }
@@ -160,19 +158,19 @@
             document.getElementById("cell_" + i + "_" + j).style.backgroundColor = color;
         }
 
-        function changeColor(i, j, num) {
+        function changeColor(i, j, mode) {
             if (getColor(i, j) == "white") {
                 setColor(i, j, "black");
             } else if (getColor(i, j) == "red") {
                 setColor(i, j, "black");
-                num++;
-            } else if (num == 0) {
+                mode++;
+            } else if (mode == 0) {
                 setColor(i, j, "white");
             } else {
                 setColor(i, j, "red");
-                num--;
+                mode--;
             }
-            document.getElementById("cell_" + i + "_" + j).setAttribute("onmousedown", "changeColor(" + i + "," + j + "," + num + ");");
+            document.getElementById("cell_" + i + "_" + j).setAttribute("onmousedown", "changeColor(" + i + "," + j + "," + mode + ");");
         }
 
         function antWalk(num) {
@@ -181,29 +179,29 @@
             (document.getElementById("number").value == "Infinity") ?
                 numOfPace = Infinity :
                 numOfPace = +document.getElementById("number").value;
-            if (info == undefined) {
-                info = [0, Math.floor(row / 2), Math.floor(col / 2), getColor(Math.floor(row / 2), Math.floor(col / 2)), 0]
+            if (ant == undefined) {
+                ant = [0, Math.floor(row / 2), Math.floor(col / 2), getColor(Math.floor(row / 2), Math.floor(col / 2)), 0]
             }
 
             if (num == 1) {
-                clearInterval(project);
-                while (++info[4] <= numOfPace) {
-                    if (info[1] == row - 1 || info[2] == col - 1 || info[1] == 0 || info[2] == 0) {
+                clearInterval(move);
+                while (++ant[4] <= numOfPace) {
+                    if (ant[1] == row - 1 || ant[2] == col - 1 || ant[1] == 0 || ant[2] == 0) {
                         alert("蚂蚁撞到边界了！");
                         break;
                     }
-                    info = onePace(info);
+                    ant = onePace(ant);
                 }
-                erase();
-            } else if (project == undefined) {
-                project = setInterval(() => {
-                    if (info[1] == row - 1 || info[2] == col - 1 || info[1] == 0 || info[2] == 0) {
+                stop();
+            } else if (move == undefined) {
+                move = setInterval(() => {
+                    if (ant[1] == row - 1 || ant[2] == col - 1 || ant[1] == 0 || ant[2] == 0) {
                         alert("蚂蚁撞到边界了！");
-                        erase();
-                    } else if (++info[4] > numOfPace) {
-                        erase();
+                        stop();
+                    } else if (++ant[4] > numOfPace) {
+                        stop();
                     } else {
-                        info = onePace(info);
+                        ant = onePace(ant);
                     }
                 }, pauseTime);
             } else {
@@ -211,40 +209,40 @@
             }
         }
 
-        function onePace(info) {
-            //info[0]表示方向，0为上，1为右，2为下，3为左；这样顺时针（或逆时针也行）的规定可以仅靠使用简单的剩余类就能实现递推，无需对各个方向分别讨论。
-            if (info[3] == "black") {
-                setColor(info[1], info[2], "white");
-                info[0] = (info[0] + 3) % 4;
+        function onePace(ant) {
+            //ant[0]表示方向，0为上，1为右，2为下，3为左；这样顺时针（或逆时针也行）的规定可以仅靠使用简单的剩余类就能实现递推，无需对各个方向分别讨论。
+            if (ant[3] == "black") {
+                setColor(ant[1], ant[2], "white");
+                ant[0] = (ant[0] + 3) % 4;
             } else {
-                setColor(info[1], info[2], "black");
-                info[0] = (info[0] + 1) % 4;
+                setColor(ant[1], ant[2], "black");
+                ant[0] = (ant[0] + 1) % 4;
             }
-            switch (info[0]) {
-                case 0: info[1]--; break;
-                case 1: info[2]++; break;
-                case 2: info[1]++; break;
-                case 3: info[2]--; break;
+            switch (ant[0]) {
+                case 0: ant[1]--; break;
+                case 1: ant[2]++; break;
+                case 2: ant[1]++; break;
+                case 3: ant[2]--; break;
             }
-            info[3] = getColor(info[1], info[2]);
-            setColor(info[1], info[2], "red");
-            document.getElementById("step").innerHTML = info[4];
-            return info;
+            ant[3] = getColor(ant[1], ant[2]);
+            setColor(ant[1], ant[2], "red");
+            document.getElementById("step").innerHTML = ant[4];
+            return ant;
         }
 
-        function erase() {
-            clearInterval(project);
-            project = info = undefined;
+        function stop() {
+            clearInterval(move);
+            move = ant = undefined;
             document.getElementById("stop").value = "暂停";
         }
 
         function pause() {
-            if (project != undefined && document.getElementById("stop").value == "暂停") {
-                clearInterval(project);
+            if (move != undefined && document.getElementById("stop").value == "暂停") {
+                clearInterval(move);
                 document.getElementById("stop").value = "继续";
-            } else if (project != undefined) {
+            } else if (move != undefined) {
                 document.getElementById("stop").value = "暂停";
-                project = undefined;
+                move = undefined;
                 antWalk(2);
             }
         }
